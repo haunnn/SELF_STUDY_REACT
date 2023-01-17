@@ -38,7 +38,9 @@ function SignIn() {
       setNickname("");
       
       // firebase 회원가입 완료했을 시에, BE에 email, uid, nickname 보내줘야함 (signupUser에 있음)
+      
       // DB에 성공적으로  저장됐다는 신호 오면, 로그인시켜서 메인페이지로 redirect
+
 
     } catch (err) {
       console.log(err.message);
