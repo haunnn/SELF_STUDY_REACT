@@ -1,44 +1,43 @@
-import React, { useEffect } from 'react'
+import React, { useContext } from "react";
+import { UserDispatch } from "./App";
 
+function User({ user }) {
+  const { username, email, id, active } = user;
 
-function User({ user, onRemove, onToggle }) {
-    const { username, email, id, active} = user
+  const dispatch = useContext(UserDispatch);
 
-    return (
-        <div>
-            <b 
-                style={{
-                    color: active ? 'green' : 'black',
-                    cursor: 'pointer'
-                }}
-                onClick={() => onToggle(id)}
-            >
-                {username}
-            </b> 
-            &nbsp;
-            <span>({email})</span>
-            <button onClick={() => onRemove(id)}>삭제</button>
-        </div>
-    )
+  return (
+    <div>
+      <b
+        style={{
+          color: active ? "green" : "black",
+          cursor: "pointer",
+        }}
+        onClick={() => dispatch({
+            type: 'TOGGLE_USER',
+            id
+        })}
+      >
+        {username}
+      </b>
+      &nbsp;
+      <span>({email})</span>
+      <button onClick={() => dispatch({
+        type: 'REMOVE_USER',
+        id
+      })}>삭제</button>
+    </div>
+  );
 }
 
-function UserList({ users, onRemove, onToggle }) {
-    return (
-        <div>
-            {
-                users.map(
-                    (user, index) => (
-                        <User
-                            user={user}
-                            key={user.id}
-                            onRemove={onRemove}
-                            onToggle={onToggle}
-                        />
-                    )
-                )
-            }
-        </div>
-    )
+function UserList({ users }) {
+  return (
+    <div>
+      {users.map((user, index) => (
+        <User user={user} key={user.id} />
+      ))}
+    </div>
+  );
 }
 
-export default UserList
+export default UserList;
