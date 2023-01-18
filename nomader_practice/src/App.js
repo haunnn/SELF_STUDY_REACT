@@ -1,107 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 
-function TimeInverter() {
-  const [amount, setAmount] = useState(0);
-  const [flipped, setFlipped] = useState(false);
-
-  const onChange = (e) => {
-    setAmount(e.target.value);
-  };
-
+function Btn({ text, changeValue, fontSize = 14}) {
   return (
-    <>
-      <h2> Time Inverter </h2>
-      <div>
-        <label htmlFor="minute">Minute</label>
-        <input
-          id="minute"
-          value={flipped ? amount * 60 : amount}
-          onChange={onChange}
-          disabled={flipped}
-        />
-      </div>
-      <div>
-        <label htmlFor="hour">Hour</label>
-        <input
-          id="hour"
-          value={flipped ? amount : Math.round(amount / 60)}
-          onChange={onChange}
-          disabled={!flipped}
-        />
-      </div>
-
-      <button onClick={() => setAmount(0)}>Reset</button>
-      <button
-        onClick={() => {
-          setAmount(0);
-          setFlipped(!flipped);
-        }}
-      >
-        Flip
-      </button>
-    </>
+    <button
+      onClick={changeValue}
+      style={{
+        backgroundColor: "tomato",
+        color: "white",
+        padding: "10px 20px",
+        border: 0,
+        borderRadius: 10,
+        fontSize,
+      }}
+    >
+      {text}
+    </button>
   );
 }
 
-function DistanceInverter() {
-  const [amount, setAmount] = useState(0);
-  const [flipped, setFlipped] = useState(false);
-
-  const onChange = (e) => {
-    setAmount(e.target.value);
-  };
-
-  return (
-    <>
-      <h2> Distance Inverter </h2>
-      <div>
-        <label htmlFor="minute">Kilometer</label>
-        <input
-          id="minute"
-          value={flipped ? amount * 60 : amount}
-          onChange={onChange}
-          disabled={flipped}
-        />
-      </div>
-      <div>
-        <label htmlFor="hour">Mile</label>
-        <input
-          id="hour"
-          value={flipped ? amount : Math.round(amount / 60)}
-          onChange={onChange}
-          disabled={!flipped}
-        />
-      </div>
-
-      <button onClick={() => setAmount(0)}>Reset</button>
-      <button
-        onClick={() => {
-          setAmount(0);
-          setFlipped(!flipped);
-        }}
-      >
-        Flip
-      </button>
-    </>
-  );
-}
+const MemorizedBtn = memo(Btn)
 
 function App() {
-  const [index, setIndex] = useState("xx");
+  const [value, setValue] = useState("Save Changes");
+  const changeValue = () => {
+    setValue("Revert Changes");
+  };
 
   return (
     <div>
-      <h1>Super Converter</h1>
-
-      <select value={index} onChange={(e) => setIndex(e.target.value)}>
-        <option value="xx">Select your units</option>
-        <option value="0">Minutes & Hours</option>
-        <option value="1">Km & Miles</option>
-      </select>
-
-      {index === "0" ? <TimeInverter /> : null}
-      {index === "1" ? <DistanceInverter /> : null }
-    
+      <MemorizedBtn text={value} changeValue={changeValue} fontSize={18}/>
+      <MemorizedBtn text="Continue" />
     </div>
   );
 }
